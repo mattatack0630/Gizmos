@@ -29,6 +29,8 @@ public:
 
 	//Static Linear Algebra
 
+	static void copy(Matrix const& left, Matrix& dest);
+
 	static bool are_equal(Matrix const& left, Matrix const& right, float tolerance = 0.0f);
 
 	static void component_mult(Matrix const& left, Matrix const& right, Matrix& dest);
@@ -48,15 +50,6 @@ public:
 	static void negate(Matrix const& left, Matrix& dest);
 
 	static void abs(Matrix const& left, Matrix& dest);
-
-	static void row_operation_swap(Matrix const& left, int row1, int row2, Matrix& dest);
-
-	static void row_operation_scale(Matrix const& left, int row1, float scale, Matrix& dest);
-
-	static void row_operation_add_to(Matrix const& left, int row1, int row2, Matrix& dest);
-
-	static void row_operation_add_scaled_to(Matrix const& left, int row1, int row2, float scale, Matrix& dest);
-
 };
 
 // Operator overloads

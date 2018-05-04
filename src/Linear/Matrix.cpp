@@ -111,7 +111,18 @@ Matrix operator*(Matrix const& left, Matrix const& right)
 	return dest;
 }
 
-// Matrix Algebra
+
+void Matrix::copy(Matrix const& left, Matrix& dest)
+{
+	// check dest size error
+	// check left.size = right.size error
+
+	for (int i = 0; i < left.m_width; i++) {
+		for (int j = 0; j < left.m_height; j++) {
+			dest.set_element(i, j, left.get_element(i, j));
+		}
+	}
+}
 
 bool Matrix::are_equal(Matrix const& left, Matrix const& right, float tolerance)
 {
@@ -126,6 +137,8 @@ bool Matrix::are_equal(Matrix const& left, Matrix const& right, float tolerance)
 
 	return equal;
 }
+
+// Matrix Algebra
 
 void Matrix::add(Matrix const& left, Matrix const& right, Matrix& dest)
 {
@@ -268,67 +281,5 @@ void Matrix::abs(Matrix const& left, Matrix& dest)
 
 }
 
-void Matrix::row_operation_swap(Matrix const& left, int row1, int row2, Matrix& dest)
-{
-	if (&left == &dest) {
-		std::vector<float>& v1 = dest.m_elementArray[row1];
-		std::vector<float>& v2 = dest.m_elementArray[row2];
-		v1.swap(v2); // quick swap
-	} else {
-		// refine later
-		for (int j = 0; j < dest.m_height; j++) {
-			for (int i = 0; i < dest.m_width; i++) {
-				if (j == row1)
-					dest.set_element(i, j, left.get_element(i, row2));
-				else if (j == row2)
-					dest.set_element(i, j, left.get_element(i, row1));
-				else
-					dest.set_element(i, j, left.get_element(i, j));
-			}
-		}
-	}
-}
-
-void Matrix::row_operation_scale(Matrix const& left, int row, float scale, Matrix& dest)
-{
-	for (int j = 0; j < dest.m_height; j++) {
-		for (int i = 0; i < dest.m_width; i++) {
-			if (j == row) {
-				float row_result = left.get_element(i, j) * scale;
-				dest.set_element(i, j, row_result);
-			} else {
-				dest.set_element(i, j, left.get_element(i, j));
-			}
-		}
-	}
-}
-
-void Matrix::row_operation_add_to(Matrix const& left, int row1, int row2, Matrix& dest)
-{
-	for (int j = 0; j < dest.m_height; j++) {
-		for (int i = 0; i < dest.m_width; i++) {
-			if (j == row2) {
-				float row_result = left.get_element(i, j) + left.get_element(i, row1);
-				dest.set_element(i, j, row_result);
-			} else {
-				dest.set_element(i, j, left.get_element(i, j));
-			}
-		}
-	}
-}
-
-void Matrix::row_operation_add_scaled_to(Matrix const& left, int row1, int row2, float scale, Matrix& dest)
-{
-	for (int j = 0; j < dest.m_height; j++) {
-		for (int i = 0; i < dest.m_width; i++) {
-			if (j == row2) {
-				float row_result = left.get_element(i, j) + (left.get_element(i, row1) * scale);
-				dest.set_element(i, j, row_result);
-			} else {
-				dest.set_element(i, j, left.get_element(i, j));
-			}
-		}
-	}
-}
 
 

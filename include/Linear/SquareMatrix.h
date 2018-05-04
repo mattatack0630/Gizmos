@@ -17,7 +17,7 @@ public:
 
 	// Static Linear Algebra
 
-	//static void invert_gaussian(Matrix const& left, Matrix& dest);
-	//determinate
+//	static void invert_gaussian(Matrix const& left, Matrix& dest);
+//	static void determinate(Matrix const& left, Matrix& dest);
 };
 
