@@ -3,7 +3,6 @@
 //
 
 #include "Transforms/ScaleTransform.h"
-#include "Linear/Matrix4f.h"
 
 void ScaleTransform::calculate_matrix(Matrix4f& dest)
 {

@@ -4,7 +4,6 @@
 
 #pragma once
 
-
 #include "SquareMatrix.h"
 
 class Matrix3f : public SquareMatrix
@@ -12,10 +11,9 @@ class Matrix3f : public SquareMatrix
 public:
 	Matrix3f();
 
-};
+	static float determinate_3x3(Matrix3f const& left);
 
-namespace MatrixAlgebra{
-
+	static void invert_3x3(Matrix3f const& left, Matrix3f& dest);
 };
 
 

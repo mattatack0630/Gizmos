@@ -1,7 +1,4 @@
-#include <iostream>
-#include <vector>
-#include "../include/Linear/Matrix.h"
-#include "../include/Linear/SquareMatrix.h"
+/*
 
 bool verify_add(Matrix m1, Matrix m2, Matrix m3)
 {
@@ -25,6 +22,7 @@ bool verify_sub(Matrix m1, Matrix m2, Matrix m3)
 
 	return result;
 }
+*/
 /*
 
 int main()

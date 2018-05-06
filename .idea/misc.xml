@@ -7,6 +7,9 @@
       <file path="$PROJECT_DIR$/src" />
       <file path="$PROJECT_DIR$/tests" />
     </sourceRoots>
+    <excludeRoots>
+      <file path="$PROJECT_DIR$/src/Linear" />
+    </excludeRoots>
   </component>
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />

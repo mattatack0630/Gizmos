@@ -6,7 +6,7 @@
 
 #include "Vector.h"
 
-class Vector2f : public Vector
+class Vector2f : public Vector<2>
 {
 public:
 	Vector2f();

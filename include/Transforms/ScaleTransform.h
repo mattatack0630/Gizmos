@@ -3,7 +3,6 @@
 //
 #pragma once
 
-#include "../Linear/Matrix4f.h"
 #include "Transform.h"
 
 class ScaleTransform : public Transform

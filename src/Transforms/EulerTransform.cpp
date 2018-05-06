@@ -3,7 +3,7 @@
 //
 
 #include <tgmath.h>
-#include "EulerTransform.h"
+#include "Transforms/EulerTransform.h"
 
 void EulerTransform::calculate_matrix(Matrix4f& dest)
 {
@@ -34,7 +34,7 @@ void EulerTransform::calculate_matrix_inverse(Matrix4f& dest)
 	const Matrix4f transform_matrix = Transform::get_matrix();
 
 	// Orthogonal Euler matrix inverse is equal to transpose
-	Matrix::transpose(transform_matrix, dest);
+	linear::transpose(transform_matrix, dest);
 }
 
 EulerTransform::EulerTransform(float x, float y, float z) :

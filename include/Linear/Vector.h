@@ -13,11 +13,11 @@ public:
 
 	int get_size() const { return m_height; }
 
-	inline float get_element(int i) const { return m_elementArray[i][0]; }
+	inline float get_element(int i) const { return Matrix::get_element(0, i); }
 
-	inline void set_element(int i, float element) { m_elementArray[i][0] = element; }
+	inline void set_element(int i, float element) { Matrix::set_element(0, i, element); }
 
-	void normalize();
+	void set_normalized();
 
 	void set_magnetude(float mag);
 

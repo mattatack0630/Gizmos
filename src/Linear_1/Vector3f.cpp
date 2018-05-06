@@ -2,14 +2,14 @@
 // Created by matthew on 8/9/17.
 //
 
-#include "Linear/Vector3f.h"
+#include "Linear_1/Vector3f.h"
 
-Vector3f::Vector3f() : Vector(3)
+Vector3f::Vector3f()
 {
 
 }
 
-Vector3f::Vector3f(float x, float y, float z) : Vector(3)
+Vector3f::Vector3f(float x, float y, float z)
 {
 	this->set_element(0, x);
 	this->set_element(1, y);
@@ -17,7 +17,7 @@ Vector3f::Vector3f(float x, float y, float z) : Vector(3)
 }
 
 
-void Vector3f::cross(Vector3f const& left, Vector3f const& right, Vector3f& dest)
+void linear::cross(Vector3f const& left, Vector3f const& right, Vector3f& dest)
 {
 	float l_x = left.get_element(0);
 	float l_y = left.get_element(1);

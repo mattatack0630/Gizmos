@@ -9,9 +9,12 @@
 
 class Matrix
 {
-protected:
+private:
 	// Stored [row][column] or [y][x]
 	std::vector<std::vector<float>> m_elementArray;
+
+protected:
+	inline std::vector<std::vector<float>>& get_array_reference() { return m_elementArray; }
 
 public:
 	int m_width;
