@@ -1,43 +1,43 @@
 //
-// Created by matthew on 8/8/17.
+// Created by mathew on 5/11/18.
 //
 
 #pragma once
 
+
 #include "Matrix.h"
 
-class Vector : public Matrix
+template<int N, typename T = float>
+class Vector : public Matrix<1, N, T>
 {
 public:
-	Vector(int s);
+	Vector();
 
-	int get_size() const { return m_height; }
+	Vector(std::array<T, 1 * N> src);
 
-	inline float get_element(int i) const { return Matrix::get_element(0, i); }
+	Vector(const Matrix<1, N, T>& src);
 
-	inline void set_element(int i, float element) { Matrix::set_element(0, i, element); }
+	inline void set_element(int n, T value) { this->elements[n] = value; }
 
-	void set_normalized();
+	inline T get_element(int n) const { return this->elements[n]; }
 
-	void set_magnetude(float mag);
-
-	float length_squared();
-
-	float length();
-
-	// Static Linear Algebra
-
-	static void normalize(Vector const& left, Vector& dest);
-
-	static void set_magnitude(Vector const& left, float mag, Vector& dest);
-
-	static float dot(Vector const& left, Vector const& right);
-
-	static float angle(Vector const& left, Vector const& right); // Maybe remove, this has no meaning for most vectors
-
-	static float length_squared(Vector const& left);
-
-	static float length(Vector const& left);
+	inline int get_size() const { return N; }
 };
 
-float operator*(Vector const& left, Vector const& right); //dot
+template<int N, typename T>
+Vector<N, T>::Vector() :
+		Matrix<1, N, T>()
+{
+}
+
+template<int N, typename T>
+Vector<N, T>::Vector(std::array<T, 1 * N> src):
+		Matrix<1, N, T>(src)
+{
+}
+
+template<int N, typename T>
+Vector<N, T>::Vector(const Matrix<1, N, T>& src) :
+		Matrix<1, N, T>(src)
+{
+}

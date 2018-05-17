@@ -5,7 +5,7 @@
 #include "Transforms/TranslationTransform.h"
 
 
-void TranslationTransform::calculate_matrix(Matrix4f& dest)
+void TranslationTransform::calculate_matrix(SquareMatrix<4>& dest)
 {
 	dest.set_identity();
 	dest.set_element(3, 0, position_x);
@@ -13,7 +13,7 @@ void TranslationTransform::calculate_matrix(Matrix4f& dest)
 	dest.set_element(3, 2, position_z);
 }
 
-void TranslationTransform::calculate_matrix_inverse(Matrix4f& dest)
+void TranslationTransform::calculate_matrix_inverse(SquareMatrix<4>& dest)
 {
 	dest.set_identity();
 	dest.set_element(3, 0, -position_x);

@@ -9,65 +9,65 @@
 namespace linear
 {
 	template<int CV, int DW, int DH, typename T>
-	void dot(Matrix_T<CV, DH, T> const& left, Matrix_T<DW, CV, T> const& right, Matrix_T<DW, DH, T>& dest);
+	void dot(Matrix<CV, DH, T> const& left, Matrix<DW, CV, T> const& right, Matrix<DW, DH, T>& dest);
 
 	template<int W, int H, typename T>
-	void component_mult(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> const& right, Matrix_T<W, H, T>& dest);
+	void component_mult(Matrix<W, H, T> const& left, Matrix<W, H, T> const& right, Matrix<W, H, T>& dest);
 
 	template<int W, int H, typename T>
-	void component_div(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> const& right, Matrix_T<W, H, T>& dest);
+	void component_div(Matrix<W, H, T> const& left, Matrix<W, H, T> const& right, Matrix<W, H, T>& dest);
 
 	template<int W, int H, typename T>
-	void add(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> const& right, Matrix_T<W, H, T>& dest);
+	void add(Matrix<W, H, T> const& left, Matrix<W, H, T> const& right, Matrix<W, H, T>& dest);
 
 	template<int W, int H, typename T>
-	void sub(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> const& right, Matrix_T<W, H, T>& dest);
+	void sub(Matrix<W, H, T> const& left, Matrix<W, H, T> const& right, Matrix<W, H, T>& dest);
 
 	template<int W, int H, typename T>
-	void scale(Matrix_T<W, H, T> const& left, float scale, Matrix_T<W, H, T>& dest);
+	void scale(Matrix<W, H, T> const& left, float scale, Matrix<W, H, T>& dest);
 
 	template<int W, int H, typename T>
-	void transpose(Matrix_T<W, H, T> const& left, Matrix_T<H, W, T>& dest);
+	void transpose(Matrix<W, H, T> const& left, Matrix<H, W, T>& dest);
 
 	template<int W, int H, typename T>
-	void negate(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T>& dest);
+	void negate(Matrix<W, H, T> const& left, Matrix<W, H, T>& dest);
 
 	template<int W, int H, typename T>
-	void abs(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T>& dest);
+	void abs(Matrix<W, H, T> const& left, Matrix<W, H, T>& dest);
 
 	template<int N, typename T>
-	float determinate(Matrix_T<N, N, T> const& left);
+	float determinate(Matrix<N, N, T> const& left);
 
 	template<typename T>
-	float determinate(Matrix_T<2, 2, T> const& left);
+	float determinate(Matrix<2, 2, T> const& left);
 
 	template<typename T>
-	float determinate(Matrix_T<3, 3, T> const& left);
+	float determinate(Matrix<3, 3, T> const& left);
 
 	template<int W, int H, typename T>
-	void inner_matrix(Matrix_T<W, H, T> const& left, int leap_x, int leap_y, Matrix_T<W - 1, H - 1, T>& dest);
+	void inner_matrix(Matrix<W, H, T> const& left, int leap_x, int leap_y, Matrix<W - 1, H - 1, T>& dest);
 
 	template<int N, typename T>
-	void minors_matrix(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& dest);
+	void minors_matrix(const Matrix<N, N, T>& left, Matrix<N, N, T>& dest);
 
 	template<int N, typename T>
-	void cofactors_matrix(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& dest);
+	void cofactors_matrix(const Matrix<N, N, T>& left, Matrix<N, N, T>& dest);
 
 	template<int N, typename T>
-	void adjoint_matrix(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& dest);
+	void adjoint_matrix(const Matrix<N, N, T>& left, Matrix<N, N, T>& dest);
 
 	template<int N, typename T>
-	void adjoint_invert(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& dest);
+	void adjoint_invert(const Matrix<N, N, T>& left, Matrix<N, N, T>& dest);
 
 	template<typename T>
-	void invert(const Matrix_T<3, 3, T>& left, Matrix_T<3, 3, T>& dest);
+	void invert(const Matrix<3, 3, T>& left, Matrix<3, 3, T>& dest);
 
 	template<typename T>
-	void invert(const Matrix_T<2, 2, T>& left, Matrix_T<2, 2, T>& dest);
+	void invert(const Matrix<2, 2, T>& left, Matrix<2, 2, T>& dest);
 }
 
 template<int CV, int DW, int DH, typename T>
-void linear::dot(Matrix_T<CV, DH, T> const& left, Matrix_T<DW, CV, T> const& right, Matrix_T<DW, DH, T>& dest)
+void linear::dot(Matrix<CV, DH, T> const& left, Matrix<DW, CV, T> const& right, Matrix<DW, DH, T>& dest)
 {
 	std::array<T, DW * DH> t_elements;
 
@@ -86,7 +86,7 @@ void linear::dot(Matrix_T<CV, DH, T> const& left, Matrix_T<DW, CV, T> const& rig
 }
 
 template<int W, int H, typename T>
-void linear::component_mult(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> const& right, Matrix_T<W, H, T>& dest)
+void linear::component_mult(Matrix<W, H, T> const& left, Matrix<W, H, T> const& right, Matrix<W, H, T>& dest)
 {
 	for (int i = 0; i < W; i++) {
 		for (int j = 0; j < H; j++) {
@@ -96,7 +96,7 @@ void linear::component_mult(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> con
 }
 
 template<int W, int H, typename T>
-void linear::component_div(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> const& right, Matrix_T<W, H, T>& dest)
+void linear::component_div(Matrix<W, H, T> const& left, Matrix<W, H, T> const& right, Matrix<W, H, T>& dest)
 {
 	for (int i = 0; i < W; i++) {
 		for (int j = 0; j < H; j++) {
@@ -106,7 +106,7 @@ void linear::component_div(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> cons
 }
 
 template<int W, int H, typename T>
-void linear::add(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> const& right, Matrix_T<W, H, T>& dest)
+void linear::add(Matrix<W, H, T> const& left, Matrix<W, H, T> const& right, Matrix<W, H, T>& dest)
 {
 	for (int i = 0; i < W; i++) {
 		for (int j = 0; j < H; j++) {
@@ -116,7 +116,7 @@ void linear::add(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> const& right, 
 }
 
 template<int W, int H, typename T>
-void linear::sub(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> const& right, Matrix_T<W, H, T>& dest)
+void linear::sub(Matrix<W, H, T> const& left, Matrix<W, H, T> const& right, Matrix<W, H, T>& dest)
 {
 	for (int i = 0; i < W; i++) {
 		for (int j = 0; j < H; j++) {
@@ -126,7 +126,7 @@ void linear::sub(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T> const& right, 
 }
 
 template<int W, int H, typename T>
-void linear::scale(Matrix_T<W, H, T> const& left, float scale, Matrix_T<W, H, T>& dest)
+void linear::scale(Matrix<W, H, T> const& left, float scale, Matrix<W, H, T>& dest)
 {
 	for (int i = 0; i < W; i++) {
 		for (int j = 0; j < H; j++) {
@@ -136,7 +136,7 @@ void linear::scale(Matrix_T<W, H, T> const& left, float scale, Matrix_T<W, H, T>
 }
 
 template<int W, int H, typename T>
-void linear::transpose(Matrix_T<W, H, T> const& left, Matrix_T<H, W, T>& dest)
+void linear::transpose(Matrix<W, H, T> const& left, Matrix<H, W, T>& dest)
 {
 	std::array<T, W * H> t_elements;
 
@@ -150,7 +150,7 @@ void linear::transpose(Matrix_T<W, H, T> const& left, Matrix_T<H, W, T>& dest)
 }
 
 template<int W, int H, typename T>
-void linear::negate(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T>& dest)
+void linear::negate(Matrix<W, H, T> const& left, Matrix<W, H, T>& dest)
 {
 	for (int i = 0; i < W; i++) {
 		for (int j = 0; j < H; j++) {
@@ -160,11 +160,11 @@ void linear::negate(Matrix_T<W, H, T> const& left, Matrix_T<W, H, T>& dest)
 }
 
 template<int N, typename T>
-float linear::determinate(const Matrix_T<N, N, T>& left)
+float linear::determinate(Matrix<N, N, T> const& left)
 {
 	//std::cout << "DET GENERAL" << std::endl;
 
-	Matrix_T<N, N, T> cofactors = Matrix_T<N, N, T>(); // Remove these
+	Matrix<N, N, T> cofactors = Matrix<N, N, T>(); // Remove these
 	linear::cofactors_matrix(left, cofactors); // Dont need entire thing!
 
 	float det = 0;
@@ -176,7 +176,7 @@ float linear::determinate(const Matrix_T<N, N, T>& left)
 }
 
 template<typename T>
-float linear::determinate(Matrix_T<2, 2, T> const& left)
+float linear::determinate(Matrix<2, 2, T> const& left)
 {
 	//std::cout << "DET SPECIAL 2" << std::endl;
 
@@ -189,7 +189,7 @@ float linear::determinate(Matrix_T<2, 2, T> const& left)
 }
 
 template<typename T>
-float linear::determinate(Matrix_T<3, 3, T> const& left)
+float linear::determinate(Matrix<3, 3, T> const& left)
 {
 	//std::cout << "DET SPECIAL 3" << std::endl;
 
@@ -207,7 +207,7 @@ float linear::determinate(Matrix_T<3, 3, T> const& left)
 }
 
 template<int W, int H, typename T>
-void linear::inner_matrix(const Matrix_T<W, H, T>& left, int leap_x, int leap_y, Matrix_T<W - 1, H - 1, T>& dest)
+void linear::inner_matrix(const Matrix<W, H, T>& left, int leap_x, int leap_y, Matrix<W - 1, H - 1, T>& dest)
 {
 	float dest_x = 0;
 
@@ -228,11 +228,11 @@ void linear::inner_matrix(const Matrix_T<W, H, T>& left, int leap_x, int leap_y,
 }
 
 template<int N, typename T>
-void linear::minors_matrix(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& dest)
+void linear::minors_matrix(const Matrix<N, N, T>& left, Matrix<N, N, T>& dest)
 {
 	for (int x = 0; x < N; x++) {
 		for (int y = 0; y < N; y++) {
-			Matrix_T<N - 1, N - 1, T> inner = Matrix_T<N - 1, N - 1, T>();
+			Matrix<N - 1, N - 1, T> inner = Matrix<N - 1, N - 1, T>();
 			linear::inner_matrix(left, x, y, inner);
 			float det = linear::determinate(inner);
 			dest.set_element(x, y, det);
@@ -241,11 +241,11 @@ void linear::minors_matrix(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& des
 }
 
 template<int N, typename T>
-void linear::cofactors_matrix(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& dest)
+void linear::cofactors_matrix(const Matrix<N, N, T>& left, Matrix<N, N, T>& dest)
 {
 	for (int x = 0; x < N; x++) {
 		for (int y = 0; y < N; y++) {
-			Matrix_T<N - 1, N - 1, T> inner = Matrix_T<N - 1, N - 1, T>(); // Remove these
+			Matrix<N - 1, N - 1, T> inner = Matrix<N - 1, N - 1, T>(); // Remove these
 			linear::inner_matrix(left, x, y, inner);
 			float cof_coeffient = ((x + y) % 2 == 0 ? 1 : -1);
 			float det = linear::determinate(inner);
@@ -255,14 +255,14 @@ void linear::cofactors_matrix(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& 
 }
 
 template<int N, typename T>
-void linear::adjoint_matrix(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& dest)
+void linear::adjoint_matrix(const Matrix<N, N, T>& left, Matrix<N, N, T>& dest)
 {
 	linear::cofactors_matrix(left, dest);
 	linear::transpose(dest, dest);
 }
 
 template<int N, typename T>
-void linear::adjoint_invert(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& dest)
+void linear::adjoint_invert(const Matrix<N, N, T>& left, Matrix<N, N, T>& dest)
 {
 	linear::adjoint_matrix(left, dest);
 
@@ -275,7 +275,7 @@ void linear::adjoint_invert(const Matrix_T<N, N, T>& left, Matrix_T<N, N, T>& de
 }
 
 template<typename T>
-void linear::invert(const Matrix_T<3, 3, T>& left, Matrix_T<3, 3, T>& dest)
+void linear::invert(const Matrix<3, 3, T>& left, Matrix<3, 3, T>& dest)
 {
 	float a = left.get_element(0, 0);
 	float b = left.get_element(1, 0);
@@ -305,7 +305,7 @@ void linear::invert(const Matrix_T<3, 3, T>& left, Matrix_T<3, 3, T>& dest)
 }
 
 template<typename T>
-void linear::invert(const Matrix_T<2, 2, T>& left, Matrix_T<2, 2, T>& dest)
+void linear::invert(const Matrix<2, 2, T>& left, Matrix<2, 2, T>& dest)
 {
 	float a = left.get_element(0, 0);
 	float b = left.get_element(1, 0);

@@ -2,10 +2,10 @@
 // Created by mathew on 5/2/18.
 //
 
+#include <Linear/Linear.h>
 #include "Transforms/WorldTransform.h"
 
 WorldTransform::WorldTransform() :
-		Transform(),
 		translation(0,0,0),
 		rotation(0,0,0),
 		scale(0,0,0)
@@ -16,7 +16,6 @@ WorldTransform::WorldTransform() :
 WorldTransform::WorldTransform(float p_x, float p_y, float p_z,
 							   float r_x, float r_y, float r_z,
 							   float s_x, float s_y, float s_z) :
-		Transform(),
 		translation(p_x, p_y, p_z),
 		rotation(r_x, r_y, r_z),
 		scale(s_x, s_y, s_z)
@@ -42,16 +41,16 @@ void WorldTransform::set_scale(float x, float y, float z)
 	mark_for_update();
 }
 
-void WorldTransform::calculate_matrix(Matrix4f& dest)
+void WorldTransform::calculate_matrix(SquareMatrix<4>& dest)
 {
 	dest.set_identity();
-	Matrix::dot(translation.get_matrix(), rotation.get_matrix(), dest);
-	Matrix::dot(dest, scale.get_matrix(), dest);
+	linear::dot(translation.get_matrix(), rotation.get_matrix(), dest);
+	linear::dot(dest, scale.get_matrix(), dest);
 }
 
-void WorldTransform::calculate_matrix_inverse(Matrix4f& dest)
+void WorldTransform::calculate_matrix_inverse(SquareMatrix<4>& dest)
 {
 	dest.set_identity();
-	Matrix::dot(scale.get_matrix_inverse(), rotation.get_matrix_inverse(), dest);
-	Matrix::dot(dest, translation.get_matrix_inverse(), dest);
+	linear::dot(scale.get_matrix_inverse(), rotation.get_matrix_inverse(), dest);
+	linear::dot(dest, translation.get_matrix_inverse(), dest);
 }

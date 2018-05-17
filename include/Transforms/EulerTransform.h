@@ -1,7 +1,7 @@
 //
 // Created by mathew on 5/2/18.
 //
-
+#pragma once
 #include "Transform.h"
 
 class EulerTransform : public Transform
@@ -14,9 +14,9 @@ private:
 
 
 protected:
-	void calculate_matrix(Matrix4f& dest) override;
+	void calculate_matrix(SquareMatrix<4>& dest) override;
 
-	void calculate_matrix_inverse(Matrix4f& dest) override;
+	void calculate_matrix_inverse(SquareMatrix<4>& dest) override;
 
 public:
 	EulerTransform(float x, float y, float z);

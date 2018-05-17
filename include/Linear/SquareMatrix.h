@@ -1,23 +1,49 @@
 //
-// Created by matthew on 8/8/17.
+// Created by mathew on 5/11/18.
 //
 
 #pragma once
 
 #include "Matrix.h"
 
-class SquareMatrix : public Matrix
+template<int N, typename T = float>
+class SquareMatrix : public Matrix<N, N, T>
 {
 public:
-	SquareMatrix(int s);
+	SquareMatrix();
+
+	SquareMatrix(std::array<T, N * N> src);
+
+	SquareMatrix(const Matrix<N, N, T>& src);
 
 	void set_identity();
-
-	void transpose();
-
-	// Static Linear Algebra
-
-//	static void invert_gaussian(Matrix const& left, Matrix& dest);
-//	static void determinate(Matrix const& left, Matrix& dest);
 };
 
+
+template<int N, typename T>
+SquareMatrix<N, T>::SquareMatrix() :
+		Matrix<N, N, T>()
+{
+}
+
+template<int N, typename T>
+SquareMatrix<N, T>::SquareMatrix(std::array<T, N * N> src):
+		Matrix<N, N, T>(src)
+{
+}
+
+template<int N, typename T>
+SquareMatrix<N, T>::SquareMatrix(const Matrix<N, N, T>& src) :
+		Matrix<N, N, T>(src)
+{
+}
+
+template<int N, typename T>
+void SquareMatrix<N, T>::set_identity()
+{
+	for(int x = 0; x<N; x++) {
+		for (int y = 0; y < N; y++) {
+			this->set_element(x, y, x == y ? 1 : 0);
+		}
+	}
+}
