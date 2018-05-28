@@ -5,6 +5,8 @@
 #pragma once
 
 #include "Matrix.h"
+#include <cmath>
+
 
 namespace linear
 {
@@ -64,6 +66,18 @@ namespace linear
 
 	template<typename T>
 	void invert(const Matrix<2, 2, T>& left, Matrix<2, 2, T>& dest);
+
+	template<typename T>
+	void cross(Matrix<1, 3, T> const& left, Matrix<1, 3, T> const& right, Matrix<1, 3, T>& dest);
+
+	template<typename T, int N>
+	float length(Matrix<1, N, T> const& left);
+
+	template<typename T, int N>
+	float lengthSquared(Matrix<1, N, T> const& left);
+
+	template<typename T, int N>
+	void normalize(Matrix<1, N, T> const& left, Matrix<1, N, T>& dest);
 }
 
 template<int CV, int DW, int DH, typename T>
@@ -322,4 +336,44 @@ void linear::invert(const Matrix<2, 2, T>& left, Matrix<2, 2, T>& dest)
 		// throw div by zero exe
 		linear::scale(dest, 0.0f, dest);
 	}
+}
+
+template<typename T, int N>
+float linear::length(const Matrix<1, N, T>& left)
+{
+	float square_len = linear::lengthSquared(left);
+	float length = sqrt(square_len);
+	return length;
+}
+
+template<typename T, int N>
+float linear::lengthSquared(const Matrix<1, N, T>& left)
+{
+	float add = 0;
+
+	for (int i = 0; i < N; i++)
+		add += (float) left.get_element(0, i);
+
+	return add;
+}
+
+template<typename T, int N>
+void linear::normalize(const Matrix<1, N, T>& left, Matrix<1, N, T>& dest)
+{
+	float length = linear::length(left);
+	linear::scale(left, 1.0 / length, dest);
+}
+
+template<typename T>
+void linear::cross(Matrix<1, 3, T> const& left, Matrix<1, 3, T> const& right, Matrix<1, 3, T>& dest)
+{
+	float l_x = left.get_element(0, 0);
+	float l_y = left.get_element(0, 1);
+	float l_z = left.get_element(0, 2);
+	float r_x = right.get_element(0, 0);
+	float r_y = right.get_element(0, 1);
+	float r_z = right.get_element(0, 2);
+	dest.set_element(0, 0, (l_y * r_z) - (l_z * r_y));
+	dest.set_element(0, 1, (l_z * r_x) - (l_x * r_z));
+	dest.set_element(0, 2, (l_x * r_y) - (l_y * r_x));
 }

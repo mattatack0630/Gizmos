@@ -31,42 +31,6 @@ public:
 
 	// Change later
 	std::unordered_map<std::string, GLint> uniform_locations;
-	std::unordered_map<std::string, GLint> attrib_locations;
 	GLint get_uniform_location(std::string uniform_name);
-	GLint get_attrib_location(std::string uniform_name);
 	void upload_uniform_matrix4(std::string uniform_name, const GLfloat *matrix);
 };
-
-/*
-GLuint shader = glCreateShader(...);
-
-// Get strings for glShaderSource.
-glShaderSource(shader, ...);
-
-glCompileShader(shader);
-
-GLint isCompiled = 0;
-glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
-if(isCompiled == GL_FALSE)
-{
-GLint maxLength = 0;
-glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
-
-// The maxLength includes the NULL character
-std::vector<GLchar> errorLog(maxLength);
-glGetShaderInfoLog(shader, maxLength, &maxLength, &errorLog[0]);
-
-// Provide the infolog in whatever manor you deem best.
-// Exit with failure.
-glDeleteShader(shader); // Don't leak the shader.
-return;
-}
-
-// Shader compilation is successful.
-
-GLuint glCreateProgram();
-The function takes no parameters.
-
-After creating a program, the shader objects you wish to link to it must be attached to the program. This is done via this function:
-
-void glAttachShader(GLuint program​, GLuint shader​);*/

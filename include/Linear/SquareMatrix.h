@@ -47,3 +47,7 @@ void SquareMatrix<N, T>::set_identity()
 		}
 	}
 }
+
+typedef SquareMatrix<2, float> Matrix2f;
+typedef SquareMatrix<3, float> Matrix3f;
+typedef SquareMatrix<4, float> Matrix4f;

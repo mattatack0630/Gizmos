@@ -4,7 +4,7 @@
 
 #include "Transforms/ScaleTransform.h"
 
-void ScaleTransform::calculate_matrix(SquareMatrix<4>& dest)
+void ScaleTransform::calculate_matrix(Matrix4f& dest)
 {
 	dest.set_identity();
 	dest.set_element(0, 0, scale_x);
@@ -12,7 +12,7 @@ void ScaleTransform::calculate_matrix(SquareMatrix<4>& dest)
 	dest.set_element(2, 2, scale_z);
 }
 
-void ScaleTransform::calculate_matrix_inverse(SquareMatrix<4>& dest)
+void ScaleTransform::calculate_matrix_inverse(Matrix4f& dest)
 {
 	// TODO cannot enter 0 scale error
 	dest.set_identity();

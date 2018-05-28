@@ -1,173 +1,75 @@
-//
-// Created by mathew on 5/4/18.
-//
-/*
-#include <Transforms/Transform.h>
-#include <Transforms/WorldTransform.h>
-#include <Rendering/Display.h>
 #include <string>
-#include <Rendering/Shader.h>
-#include "../lib/glfw/deps/linmath.h"
-
-static const struct
-{
-	float x, y;
-	float r, g, b;
-} vertices[3] =
-		{
-				{-0.6f, -0.4f, 1.f, 0.f, 0.f},
-				{0.6f,  -0.4f, 0.f, 1.f, 0.f},
-				{0.f,   0.6f,  0.f, 0.f, 1.f}
-		};
-
-int main(void)
-{
-	Display display = Display(400, 400, "Name");
-
-	std::string frag = "varying vec3 color;\n"
-					   "void main()\n"
-					   "{\n"
-					   "    gl_FragColor = vec4(color, 1.0);\n"
-					   "}\n";
-
-	std::string vert = "uniform mat4 MVP;\n"
-					   "attribute vec3 vCol;\n"
-					   "attribute vec2 vPos;\n"
-					   "varying vec3 color;\n"
-					   "void main()\n"
-					   "{\n"
-					   "    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
-					   "    color = vCol;\n"
-					   "}\n";
-
-	Shader shader = Shader(frag, vert);
-
-	GLuint vertex_buffer;
-	glGenBuffers(1, &vertex_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	GLint mvp_location = glGetUniformLocation(shader.get_id(), "MVP");
-	GLint vpos_location = glGetAttribLocation(shader.get_id(), "vPos");
-	GLint vcol_location = glGetAttribLocation(shader.get_id(), "vCol");
-
-	glEnableVertexAttribArray(vpos_location);
-	glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void *) 0);
-	glEnableVertexAttribArray(vcol_location);
-	glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void *) (sizeof(float) * 2));
-
-	while (display.active()) {
-
-		glViewport(0, 0, 400, 400);
-		glClear(GL_COLOR_BUFFER_BIT);
-		mat4x4 m, p, mvp;
-
-		mat4x4_identity(m);
-		mat4x4_rotate_Z(m, m, (float) glfwGetTime());
-		mat4x4_ortho(p, -400 / (float) 400, 400 / (float) 400, -1.f, 1.f, 1.f, -1.f);
-		mat4x4_mul(mvp, p, m);
-
-		const GLfloat matrix[16] =
-				{
-						1, 0, 0, 0,
-						0, 1, 0, 0,
-						0, 0, 1, 0,
-						0, 0, 0, 1
-				};
-
-		shader.bind();
-		glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat *) mvp);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-		display.update();
-	}
-
-
-	return 0;
-}*/
-
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-
-#include <stdlib.h>
-#include <stdio.h>
+#include <fstream>
 #include <Rendering/Display.h>
-#include <string>
 #include <Rendering/Shader.h>
-#include <Linear/Matrix.h>
-#include <Linear/Linear.h>
-#include <Transforms/Transform.h>
+#include <Rendering/Vao.h>
 #include <Transforms/WorldTransform.h>
 #include <Transforms/OrthoTransform.h>
-#include <unordered_map>
+#include <cmath>
+#include <Transforms/PerspectiveTransform.h>
+#include "Rendering/ModelLoader.h"
+#include "Rendering/StaticMesh.h"
 #include "../lib/glfw/deps/linmath.h"
 
-static const struct
+std::string file_to_string(std::string name)
 {
-	float x, y;
-	float r, g, b;
-} vertices[3] =
-		{
-				{-0.6f, -0.4f, 1.f, 0.f, 0.f},
-				{0.6f,  -0.4f, 0.f, 1.f, 0.f},
-				{0.f,   0.6f,  0.f, 0.f, 1.f}
-		};
+	std::ifstream infile{name};
+	std::string file_contents{std::istreambuf_iterator<char>(infile), std::istreambuf_iterator<char>()};
+	return file_contents;
+}
 
-std::string vertex_shader_text =
-		"uniform mat4 MVP;\n"
-		"attribute vec3 vCol;\n"
-		"attribute vec2 vPos;\n"
-		"varying vec3 color;\n"
-		"void main()\n"
-		"{\n"
-		"    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
-		"    color = vCol;\n"
-		"}\n";
-
-std::string fragment_shader_text =
-		"varying vec3 color;\n"
-		"void main()\n"
-		"{\n"
-		"    gl_FragColor = vec4(color, 1.0);\n"
-		"}\n";
-
-
-int main(void)
+float map(float x, float in_min, float in_max, float out_min, float out_max)
 {
+	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
-	Display display(400, 400, "TEST");
-	GLuint vertex_buffer;
-	GLint vpos_location, vcol_location;
+// shader source code
 
-	glGenBuffers(1, &vertex_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+int main()
+{
+	Display display = Display(640, 640, "Name");
 
-	Shader shader = Shader(fragment_shader_text, vertex_shader_text);
+	std::string vertex_source = file_to_string("/home/mathew/CLionProjects/Gizmos/tests/shader.vs");
+	std::string fragment_source = file_to_string("/home/mathew/CLionProjects/Gizmos/tests/shader.fs");
+	Shader shader = Shader(fragment_source, vertex_source);
 
-	vpos_location = shader.get_attrib_location( "vPos");
-	vcol_location = shader.get_attrib_location( "vCol");
+	Vao vert_array = ModelLoader::load_OBJ("/home/mathew/CLionProjects/Gizmos/tests/test_file");
 
-	glEnableVertexAttribArray(vpos_location);
-	glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void *) 0);
-	glEnableVertexAttribArray(vcol_location);
-	glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void *) (sizeof(float) * 2));
+	WorldTransform view = WorldTransform(0, 0, 0, 0, 0, 0, 1, 1, 1);
+	WorldTransform model = WorldTransform(0, 0, 0, 0, 0, 0, 1, 1, 1);
+	//PerspectiveTransform projection = PerspectiveTransform(1, 0.1, 10000, M_PI / 3);
+	OrthoTransform projection = OrthoTransform(-5, -5, 50, 5, 5, -50);
+	Matrix4f MVP = Matrix4f();
 
 	while (display.active()) {
 
-		GLfloat ratio = 400 / (GLfloat) 400;
-		Matrix<4, 4, GLfloat> mvp = Matrix<4, 4, GLfloat>();
-		OrthoTransform ortho = OrthoTransform(-ratio, -1, 1, ratio, 1, -1);
-		WorldTransform world = WorldTransform(0, 0, 0, 0, 0, (GLfloat) glfwGetTime(), 1, 1, 1);
-		linear::dot(ortho.get_matrix(), world.get_matrix(), mvp);
-		shader.upload_uniform_matrix4("MVP", mvp.get_pointer());
-
 		shader.bind();
 
-		glClear(GL_COLOR_BUFFER_BIT);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//view.set_rotation(0, map(sin(glfwGetTime()), -1, 1, -M_PI / 10, M_PI / 10), 0);
+
+		float s = map(sin(glfwGetTime()), -1, 1, 5, 30);
+		//model.set_scale(s,s,s);
+		model.set_translation(0, 0, -s);
+		model.set_rotation(glfwGetTime(), glfwGetTime(), glfwGetTime());
+
+		MVP.set_identity();
+
+		linear::dot(MVP, projection.get_matrix(), MVP);
+		linear::dot(MVP, view.get_matrix(), MVP);
+		linear::dot(MVP, model.get_matrix(), MVP);
+
+		shader.upload_uniform_matrix4("MVP", MVP.get_pointer());
+
+		vert_array.bind();
+
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		glPointSize(10);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glDrawElements(vert_array.get_topology(), vert_array.get_vertex_count(), GL_UNSIGNED_INT, (void *) 0);
 
 		display.update();
 	}

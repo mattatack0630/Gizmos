@@ -117,7 +117,7 @@ Shader::~Shader()
 void Shader::upload_uniform_matrix4(std::string uniform_name, const GLfloat *matrix)
 {
 	GLint location = get_uniform_location(uniform_name);
-	glUniformMatrix4fv(location, 1, GL_FALSE, matrix);
+	glUniformMatrix4fv(location, 1, GL_TRUE, matrix);
 }
 
 GLint Shader::get_uniform_location(std::string uniform_name)
@@ -127,17 +127,6 @@ GLint Shader::get_uniform_location(std::string uniform_name)
 	} else {
 		GLint new_location = glGetUniformLocation(program_id, uniform_name.c_str());
 		uniform_locations[uniform_name] = new_location;
-		return new_location;
-	}
-}
-
-GLint Shader::get_attrib_location(std::string attrib_name)
-{
-	if (attrib_locations.find(attrib_name) != attrib_locations.end()) {
-		return attrib_locations[attrib_name];
-	} else {
-		GLint new_location = glGetAttribLocation(program_id, attrib_name.c_str());
-		attrib_locations[attrib_name] = new_location;
 		return new_location;
 	}
 }

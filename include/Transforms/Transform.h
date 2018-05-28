@@ -8,7 +8,7 @@
 
 struct UpdateMatrix
 {
-	SquareMatrix<4> matrix;
+	Matrix4f matrix;
 	bool needs_update;
 };
 
@@ -21,9 +21,9 @@ private:
 protected:
 	void mark_for_update();
 
-	virtual void calculate_matrix(SquareMatrix<4>& dest) = 0;
+	virtual void calculate_matrix(Matrix4f& dest) = 0;
 
-	virtual void calculate_matrix_inverse(SquareMatrix<4>& dest) = 0;
+	virtual void calculate_matrix_inverse(Matrix4f& dest) = 0;
 
 public:
 	const SquareMatrix<4>& get_matrix();

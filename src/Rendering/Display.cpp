@@ -5,6 +5,7 @@
 #include <Rendering/Display.h>
 #include <cstdlib>
 #include <cstdio>
+#include <iostream>
 
 static void error_callback(int error, const char *description)
 {
@@ -24,8 +25,9 @@ Display::Display(int w, int h, const char *name)
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 	window = glfwCreateWindow(w, h, name, NULL, NULL);
 

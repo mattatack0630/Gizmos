@@ -15,9 +15,9 @@ private:
 
 
 protected:
-	void calculate_matrix(SquareMatrix<4>& dest) override;
+	void calculate_matrix(Matrix4f& dest) override;
 
-	void calculate_matrix_inverse(SquareMatrix<4>& dest) override;
+	void calculate_matrix_inverse(Matrix4f& dest) override;
 
 public:
 	TranslationTransform(float x, float y, float z);

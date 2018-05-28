@@ -28,11 +28,11 @@ void EulerTransform::calculate_matrix(SquareMatrix<4>& dest)
 	dest.set_element(2, 2, (cos_p * cos_h));
 }
 
-void EulerTransform::calculate_matrix_inverse(SquareMatrix<4>& dest)
+void EulerTransform::calculate_matrix_inverse(Matrix4f& dest)
 {
 	dest.set_identity();
 
-	const SquareMatrix<4> transform_matrix = Transform::get_matrix();
+	const Matrix4f transform_matrix = Transform::get_matrix();
 
 	// Orthogonal Euler matrix inverse is equal to transpose
 	linear::transpose(transform_matrix, dest);

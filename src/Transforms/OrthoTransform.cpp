@@ -41,7 +41,7 @@ void OrthoTransform::set_view_bounds(float min_x, float min_y, float min_z, floa
 	Transform::mark_for_update();
 }
 
-void OrthoTransform::calculate_matrix(SquareMatrix<4>& dest)
+void OrthoTransform::calculate_matrix(Matrix4f& dest)
 {
 	dest.set_identity();
 
@@ -56,7 +56,7 @@ void OrthoTransform::calculate_matrix(SquareMatrix<4>& dest)
 	dest.set_element(3, 2, -((view_bounds.max_z + view_bounds.min_z) / (view_bounds.max_z - view_bounds.min_z)));
 }
 
-void OrthoTransform::calculate_matrix_inverse(SquareMatrix<4>& dest)
+void OrthoTransform::calculate_matrix_inverse(Matrix4f& dest)
 {
 	dest.set_identity();
 

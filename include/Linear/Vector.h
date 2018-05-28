@@ -41,3 +41,8 @@ Vector<N, T>::Vector(const Matrix<1, N, T>& src) :
 		Matrix<1, N, T>(src)
 {
 }
+
+typedef Vector<2, float> Vector2f;
+typedef Vector<3, float> Vector3f;
+typedef Vector<4, float> Vector4f;
+

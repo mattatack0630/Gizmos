@@ -41,14 +41,18 @@ void WorldTransform::set_scale(float x, float y, float z)
 	mark_for_update();
 }
 
-void WorldTransform::calculate_matrix(SquareMatrix<4>& dest)
+void WorldTransform::calculate_matrix(Matrix4f& dest)
 {
 	dest.set_identity();
-	linear::dot(translation.get_matrix(), rotation.get_matrix(), dest);
+	linear::dot(dest, translation.get_matrix(), dest);
+	linear::dot(dest, rotation.get_matrix(), dest);
 	linear::dot(dest, scale.get_matrix(), dest);
+
+	//linear::dot(scale.get_matrix(), rotation.get_matrix(), dest);
+	//linear::dot(dest, translation.get_matrix(), dest);
 }
 
-void WorldTransform::calculate_matrix_inverse(SquareMatrix<4>& dest)
+void WorldTransform::calculate_matrix_inverse(Matrix4f& dest)
 {
 	dest.set_identity();
 	linear::dot(scale.get_matrix_inverse(), rotation.get_matrix_inverse(), dest);

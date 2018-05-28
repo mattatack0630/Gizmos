@@ -30,7 +30,7 @@ public:
 
 	inline const std::array<T, W * H> get_array() { return elements; }
 
-	inline const T* get_pointer() { return elements.data(); }
+	inline const T *get_pointer() { return elements.data(); }
 
 	inline int get_height() const { return H; }
 
