@@ -92,7 +92,7 @@ void linear::dot(Matrix<CV, DH, T> const& left, Matrix<DW, CV, T> const& right, 
 			for (int k = 0; k < CV; k++)
 				elementVal += (left.get_element(k, y) * right.get_element(x, k));
 
-			t_elements[y * dest.get_width() + x] = elementVal;
+			t_elements[x * dest.get_height() + y] = elementVal;
 		}
 	}
 
@@ -156,7 +156,7 @@ void linear::transpose(Matrix<W, H, T> const& left, Matrix<H, W, T>& dest)
 
 	for (int x = 0; x < W; x++) {
 		for (int y = 0; y < H; y++) {
-			t_elements[y * W + x] = left.get_element(y, x);
+			t_elements[x * H + y] = left.get_element(y, x);
 		}
 	}
 
@@ -376,4 +376,73 @@ void linear::cross(Matrix<1, 3, T> const& left, Matrix<1, 3, T> const& right, Ma
 	dest.set_element(0, 0, (l_y * r_z) - (l_z * r_y));
 	dest.set_element(0, 1, (l_z * r_x) - (l_x * r_z));
 	dest.set_element(0, 2, (l_x * r_y) - (l_y * r_x));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<int CV, int DW, int DH, typename T>
+Matrix<DW, DH, T> operator*(Matrix<CV, DH, T> const& left, Matrix<DW, CV, T> const& right)
+{
+	Matrix<DW, DH, T> dest = Matrix<DW, DH, T>();
+
+	linear::dot(left, right, dest);
+
+	return dest;
+}
+
+template<int W, int H, typename T>
+Matrix<W, H, T>operator+(Matrix<W, H, T> const& left, Matrix<W, H, T> const& right)
+{
+	Matrix<W,H,T> dest = Matrix<W, H, T>();
+	linear::add(left, right, dest);
+	return dest;
+
+}
+
+template<int W, int H, typename T>
+Matrix<W, H, T> operator-(Matrix<W, H, T> const& left, Matrix<W, H, T> const& right)
+{
+	Matrix<W,H,T> dest = Matrix<W, H, T>();
+	linear::sub(left, right, dest);
+	return dest;
+
+}
+
+template<int W, int H, typename T>
+Matrix<W, H, T> operator*(Matrix<W, H, T> const& left, float scale)
+{
+	Matrix<W,H,T> dest = Matrix<W, H, T>();
+	linear::scale(left, scale, dest);
+	return dest;
+
+}
+
+template<int W, int H, typename T>
+void operator*=(Matrix<W, H, T>& left, Matrix<W, H, T> const& right)
+{
+	linear::dot(left, right, left);
+}
+
+template<int W, int H, typename T>
+void operator+=(Matrix<W, H, T>& left, Matrix<W, H, T> const& right)
+{
+	linear::add(left, right, left);
+}
+
+template<int W, int H, typename T>
+void operator-=(Matrix<W, H, T>& left, Matrix<W, H, T> const& right)
+{
+	linear::sub(left, right, left);
+}
+
+template<int W, int H, typename T>
+void operator*=(Matrix<W, H, T>& left, float scale)
+{
+	linear::scale(left, scale, left);
+}
+
+template<int W, int H, typename T>
+void operator/=(Matrix<W, H, T>& left, float scale)
+{
+	linear::scale(left, 1.0f/scale, left);
 }

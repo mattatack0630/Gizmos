@@ -47,6 +47,8 @@ void Display::update()
 {
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+
+
 }
 
 bool Display::active()

@@ -26,7 +26,11 @@ public:
 	Vbo(const void *data, GLuint chunk_size, GLuint chunk_amount, GLuint usage, GLuint buffer_type);
 
 	void set_attrib_pointer(GLuint index, GLuint components, GLuint type, GLuint offset);
+
 	void bind();
 	void unbind();
+
+	void generate();
+	void destroy();
 };
 

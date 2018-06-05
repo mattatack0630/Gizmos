@@ -16,9 +16,8 @@ public:
 
 	SquareMatrix(const Matrix<N, N, T>& src);
 
-	void set_identity();
+	SquareMatrix<N, T>&  set_identity();
 };
-
 
 template<int N, typename T>
 SquareMatrix<N, T>::SquareMatrix() :
@@ -39,13 +38,15 @@ SquareMatrix<N, T>::SquareMatrix(const Matrix<N, N, T>& src) :
 }
 
 template<int N, typename T>
-void SquareMatrix<N, T>::set_identity()
+SquareMatrix<N, T>& SquareMatrix<N, T>::set_identity()
 {
 	for(int x = 0; x<N; x++) {
 		for (int y = 0; y < N; y++) {
 			this->set_element(x, y, x == y ? 1 : 0);
 		}
 	}
+
+	return *this;
 }
 
 typedef SquareMatrix<2, float> Matrix2f;

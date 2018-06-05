@@ -11,34 +11,34 @@
 template<int W, int H, typename T = float>
 class Matrix
 {
-protected:
-	// Stored [column][row] or [x][y] or y*width+x
-	std::array<T, W * H> elements = {};
+	protected:
+		// Stored [column][row] or [x][y] or y*width+x
+		std::array<T, W * H> elements = {};
 
-public:
-	Matrix();
+	public:
+		Matrix();
 
-	Matrix(std::array<T, W * H> src);
+		Matrix(std::array<T, W * H> src);
 
-	Matrix(const Matrix<W, H, T>& src);
+		Matrix(const Matrix<W, H, T>& src);
 
-	inline void set_elements(std::array<T, W * H> src) { std::copy(std::begin(src), std::end(src), std::begin(elements)); }
+		inline void set_elements(std::array<T, W * H> src) { std::copy(std::begin(src), std::end(src), std::begin(elements)); }
 
-	inline void set_element(int x, int y, T value) { elements[y * W + x] = value; }
+		inline void set_element(int x, int y, T value) { elements[x * H + y] = value; }
 
-	inline T get_element(int x, int y) const { return elements[y * W + x]; }
+		inline T get_element(int x, int y) const { return elements[x * H + y]; }
 
-	inline const std::array<T, W * H> get_array() { return elements; }
+		inline const std::array<T, W * H> get_array() const { return elements; }
 
-	inline const T *get_pointer() { return elements.data(); }
+		inline const T* get_pointer() const { return elements.data(); }
 
-	inline int get_height() const { return H; }
+		inline int get_height() const { return H; }
 
-	inline int get_width() const { return W; }
+		inline int get_width() const { return W; }
 
-	void set_zero();
+		Matrix<W, H, T>& set_zero();
 
-	bool is_equal(Matrix<W, H, T> matrix, float tolerance = 0.0f) const;
+		bool is_equal(Matrix<W, H, T> matrix, float tolerance = 0.0f) const;
 };
 
 template<int W, int H, typename T>
@@ -48,7 +48,7 @@ Matrix<W, H, T>::Matrix() :
 }
 
 template<int W, int H, typename T>
-Matrix<W, H, T>::Matrix(std::array<T, W * H> src):
+Matrix<W, H, T>::Matrix(std::array<T, W * H> src) :
 		elements(src)
 {
 }
@@ -57,6 +57,18 @@ template<int W, int H, typename T>
 Matrix<W, H, T>::Matrix(const Matrix<W, H, T>& src) :
 		elements(src.elements)
 {
+}
+
+template<int W, int H, typename T>
+Matrix<W, H, T>& Matrix<W, H, T>::set_zero()
+{
+	for (int x = 0; x < W; x++) {
+		for (int y = 0; y < H; y++) {
+			set_element(x, y, 0);
+		}
+	}
+
+	return *this;
 }
 
 template<int W, int H, typename T>
@@ -73,16 +85,6 @@ bool Matrix<W, H, T>::is_equal(Matrix<W, H, T> matrix, float tolerance) const
 	}
 
 	return equal;
-}
-
-template<int W, int H, typename T>
-void Matrix<W, H, T>::set_zero()
-{
-	for (int x = 0; x < W; x++) {
-		for (int y = 0; y < H; y++) {
-			set_element(x, y, 0);
-		}
-	}
 }
 
 template<int W, int H, typename T>

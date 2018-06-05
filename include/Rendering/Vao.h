@@ -18,7 +18,6 @@ private:
 public:
 	Vao();
 	Vao(GLuint topology);
-	~Vao();
 
 	void add_data_vbo(Vbo);
 	void add_index_vbo(Vbo);
@@ -27,7 +26,12 @@ public:
 	void set_vertex_count(GLuint i);
 
 	GLuint get_topology();
+	GLuint get_id();
 
 	void bind();
 	void unbind();
+
+	void generate();
+	void destroy();
+
 };

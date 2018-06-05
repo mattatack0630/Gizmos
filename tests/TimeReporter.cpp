@@ -6,7 +6,6 @@
 #include <iostream>
 #include "TimeReporter.h"
 
-typedef std::chrono::high_resolution_clock Clock;
 
 void TimeReporter::print_time(void (*function)(void))
 {
@@ -16,6 +15,23 @@ void TimeReporter::print_time(void (*function)(void))
 
 	auto end = Clock::now();
 
+	auto diff = end - start;
+
+	std::cout << std::chrono::duration <double, std::milli> (diff).count() << " ms" << std::endl;
+}
+
+void TimeReporter::begin()
+{
+	start = Clock::now();
+}
+
+void TimeReporter::finish()
+{
+	end = Clock::now();
+}
+
+void TimeReporter::print()
+{
 	auto diff = end - start;
 
 	std::cout << std::chrono::duration <double, std::milli> (diff).count() << " ms" << std::endl;
